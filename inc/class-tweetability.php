@@ -104,15 +104,26 @@ class Tweetability {
 
     $settings = get_option( 'tweetability-settings' );
     $defaults = array(
-        'via' => $settings('via'),
-        'related' => $settings('related'),
-        'linkclass' => $settings('linkclass'),
+        'via' => $settings['via'],
+        'related' => $settings['related'],
+        'linkclass' => $settings['linkclass'],
         'url' => '',
       );
 
+    // override global settings with the ones specified in shortcode
     $attrs = shortcode_atts($defaults, $attrs);
 
-    return "<span class='tweetability-plugin'><span>" . $content . "</span></span>";
+    $attrs_string = self::get_attr_as_string($attrs, 'via')
+                  . self::get_attr_as_string($attrs, 'related')
+                  . self::get_attr_as_string($attrs, 'url')
+                  . self::get_attr_as_string($attrs, 'linkclass');
+    
+    return "<span class='tweetability-plugin' $attrs_string><span>" . $content . "</span></span>";
+  }
+  
+  private static function get_attr_as_string($attrs, $name) {
+    $val = $attrs[$name];
+    return isset($val) && strlen($val)? " data-$name='$val'": "";
   }
 
   function print_inline_script() {
@@ -122,7 +133,7 @@ class Tweetability {
       jQuery(function($){
 
       var config = ["via", "linkClass", "related"];
-        $(".tweetability-plugin").find("span").each(function(index, item){
+        $(".tweetability-plugin").each(function(index, item){
           
           var $this = $(item),
               opts = {};
@@ -130,11 +141,14 @@ class Tweetability {
           for (var i=0; i<config.length;i++) {
             var propName = config[i],
                 attrVal = $this.attr("data-" + propName);
+                
+            console.log(propName + " - " + attrVal);
             if (attrVal) {
               opts[propName] = attrVal;
             }
           }
-          $this.tweetable();
+          console.log("opts", opts);
+          $this.find("span").tweetable(opts);
         });
       });
       </script>

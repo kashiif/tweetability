@@ -1,3 +1,4 @@
+// Originally from https://github.com/dukerson/jquery.tweetable.js
 // Copy-pasted boilerplate from dev.twitter.com because I am a bad programmer
 (function() {
   if (window.__twitterIntentHandler) return;

@@ -185,9 +185,10 @@ class Tweetability_Admin {
     $this->add_section( $sections[0], __('GENERAL_SETTING_TITLE', 'tweetability'), 'add_general_settings_section' );
 
     // Fields - General Settings section
-    add_settings_field( 'add_via', __('VIA', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], 'via' );
-    add_settings_field( 'add_related', __('RELATED', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], 'related' );
-    add_settings_field( 'add_link_class', __('LINK_CLASS', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], 'linkclass' );
+    add_settings_field( 'tweetability-via', __('VIA', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'via', __('HELP_TEXT_VIA', 'tweetability') ) );
+    add_settings_field( 'tweetability-related', __('RELATED', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'related', __('HELP_TEXT_RELATED', 'tweetability') ) );
+    add_settings_field( 'tweetability-linkclass', __('LINK_CLASS', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'linkclass', __('HELP_TEXT_LINKCLASS', 'tweetability') ) );
+    add_settings_field( 'tweetability-tooltip', __('TOOLTIP', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'tooltip', __('HELP_TEXT_TOOLTIP', 'tweetability') ) );
   }
   
   private function add_section($section, $localized_title, $function_name) {
@@ -198,9 +199,12 @@ class Tweetability_Admin {
                         );
   }
 
-  private function add_textbox($field_name) {
+  private function add_textbox($field_name, $help_text) {
     $field = esc_attr( $this->settings[$field_name] );
     echo "<input class='regular-text' type='text' name='tweetability-settings[$field_name]' value='$field' />";
+    if ($help_text) {
+      echo "<p class='description'>" . $help_text . "</p>";
+    }
   }
 
   
@@ -214,8 +218,8 @@ class Tweetability_Admin {
     printf(__('GENERAL_SETTING_AREA_DESCRIPTION', 'tweetability'));
   }
 
-  public function add_setting($field_name) {
-      $this->add_textbox( $field_name );
+  public function add_setting($args) {
+      $this->add_textbox( $args[0], $args[1] );
   }
 
   /********************** Validation for Options Form **********************/
