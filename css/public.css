@@ -1,0 +1,22 @@
+/* This stylesheet is used to style the public view of the plugin. */
+
+
+.tweetability-plugin >.tweetable {
+  padding: 3px;
+  background-color: #e9ebe4;
+  color: #000;
+  text-decoration:none;
+}
+
+.tweetability-plugin>.tweetable:after {
+  margin-left:4px;
+  content: url('https://dev.twitter.com/sites/default/files/images_documentation/bird_gray_16.png');
+}
+
+.tweetability-plugin>.tweetable:hover {
+  background-color: #e2f1f9;
+}
+
+.tweetability-plugin>.tweetable:hover:after {
+  content: url('https://dev.twitter.com/sites/default/files/images_documentation/bird_blue_16.png');
+}
