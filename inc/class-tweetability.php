@@ -97,7 +97,7 @@ class Tweetability {
     $this->enqueue_styles();
     $this->enqueue_scripts();
     
-    error_log("handle_shortcode: " . $content . " - " . json_encode($attrs));
+    // error_log("handle_shortcode: " . $content . " - " . json_encode($attrs));
     if (strlen($content) == 0) {
       return "";
     }
@@ -142,12 +142,10 @@ class Tweetability {
             var propName = config[i],
                 attrVal = $this.attr("data-" + propName);
                 
-            console.log(propName + " - " + attrVal);
             if (attrVal) {
               opts[propName] = attrVal;
             }
           }
-          console.log("opts", opts);
           $this.find("span").tweetable(opts);
         });
       });

@@ -1,24 +1,22 @@
 <?php
 /**
- * The WordPress Plugin Boilerplate.
- *
- * A foundation off of which to build well-documented WordPress plugins that also follow
- * WordPress coding standards and PHP best practices.
+ * Tweetability allows you to indicate text in your posts that your readers can tweet with a single click by using a
+ * shortcode.
  *
  * @package Tweetability
  * @author  Kashif Iqbal Khan <kashiif@gmail.com>
  * @license   GPL-2.0+
  * @copyright 2013 Kashif Iqbal Khan kashiif@gmail.com 
- * @link      
+ * @link      www.kashiif.com
 
  *
  * @wordpress-plugin
  * Plugin Name: Tweetability
  * Plugin URI:  
- * Description: Tweetability
+ * Description: Make sentences in your post tweetable - The modern way
  * Version:     0.1.0
  * Author:      Kashif Iqbal Khan
- * Author URI:  
+ * Author URI:  www.kashiif.com
  * Text Domain: tweetability-locale
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt

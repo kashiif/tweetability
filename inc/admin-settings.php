@@ -87,8 +87,8 @@ class Tweetability_Admin {
    */
   private function _do_admin_menu() {
     $this->plugin_screen_hook_suffix = add_options_page( 
-            __('SETTING_PAGE_TITLE', 'tweetability'),     /* The title of the page when the menu is selected */
-            __('SETTING_PAGE_MENU_LABEL', 'tweetability'),/* The text for the menu */
+            __('Tweetability Options', 'tweetability'),     /* The title of the page when the menu is selected */
+            __('Tweetability', 'tweetability'),/* The text for the menu */
             'manage_options',                              /* capability required for this menu to be displayed to user */
             Tweetability_Info::settings_page_slug , /* menu slug that is used when adding setting sections */
             array($this, 'add_options_page')               /* callback to output the content for this page */
@@ -146,7 +146,7 @@ class Tweetability_Admin {
     ?>
     <div class="wrap">
       <?php screen_icon(); ?>
-      <h2><?php printf( __('SETTING_PAGE_TITLE', 'tweetability') ) ?></h2>
+      <h2><?php printf( __('Tweetability Options', 'tweetability') ) ?></h2>
       <form action="options.php" method="POST">
         <?php settings_fields( 'tweetability-settings-group' ); ?>
         <?php do_settings_sections( Tweetability_Info::settings_page_slug ); ?>
@@ -182,13 +182,17 @@ class Tweetability_Admin {
                   'general_settings_section'
                 );
     
-    $this->add_section( $sections[0], __('GENERAL_SETTING_TITLE', 'tweetability'), 'add_general_settings_section' );
+    $this->add_section( $sections[0], __('Global Settings', 'tweetability'), 'add_general_settings_section');
 
     // Fields - General Settings section
-    add_settings_field( 'tweetability-via', __('VIA', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'via', __('HELP_TEXT_VIA', 'tweetability') ) );
-    add_settings_field( 'tweetability-related', __('RELATED', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'related', __('HELP_TEXT_RELATED', 'tweetability') ) );
-    add_settings_field( 'tweetability-linkclass', __('LINK_CLASS', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'linkclass', __('HELP_TEXT_LINKCLASS', 'tweetability') ) );
-    add_settings_field( 'tweetability-tooltip', __('TOOLTIP', 'tweetability'), array($this, 'add_setting'), $page, $sections[0], array( 'tooltip', __('HELP_TEXT_TOOLTIP', 'tweetability') ) );
+    add_settings_field( 'tweetability-via', __('Via', 'tweetability') . ' (via)', array($this, 'add_setting'), $page, $sections[0],
+      array( 'via', __('A twitter screen name that will be added as @via <screen name> to the tweet text', 'tweetability') ) );
+    add_settings_field( 'tweetability-related', __('Related', 'tweetability') . ' (related)', array($this, 'add_setting'), $page, $sections[0],
+      array( 'related', __('HELP_TEXT_RELATED', 'tweetability') ) );
+    add_settings_field( 'tweetability-linkclass', __('Link Class', 'tweetability') . ' (linkclass)', array($this, 'add_setting'), $page, $sections[0],
+      array( 'linkclass', __('Additional css classes to add to twitter link. Thic can be used to change color, background color or hover color', 'tweetability') ) );
+    add_settings_field( 'tweetability-tooltip', __('Tooltip', 'tweetability') . ' (tooltip)', array($this, 'add_setting'), $page, $sections[0],
+      array( 'tooltip', __('Tooltip text that appears when user hovers over the link', 'tweetability') ) );
   }
   
   private function add_section($section, $localized_title, $function_name) {
@@ -200,10 +204,11 @@ class Tweetability_Admin {
   }
 
   private function add_textbox($field_name, $help_text) {
-    $field = esc_attr( $this->settings[$field_name] );
+
+    $field = isset($this->settings[$field_name]) ? esc_attr(  $this->settings[$field_name] ) : "";
     echo "<input class='regular-text' type='text' name='tweetability-settings[$field_name]' value='$field' />";
     if ($help_text) {
-      echo "<p class='description'>" . $help_text . "</p>";
+      echo "<p class='description'>" . esc_html($help_text) . "</p>";
     }
   }
 
@@ -215,7 +220,8 @@ class Tweetability_Admin {
   * Could be any html
   */
   public function add_general_settings_section() {
-    printf(__('GENERAL_SETTING_AREA_DESCRIPTION', 'tweetability'));
+    printf(__('Define values to be used globally for the shortcode.', 'tweetability'));
+    printf(__('You can override any of these values by using associated attribute in the shortcode mentioned in parenthesis.', 'tweetability'));
   }
 
   public function add_setting($args) {
