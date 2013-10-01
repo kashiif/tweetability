@@ -7,7 +7,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Tweetability allows you to indicate text in your posts that your readers can tweet with a single click by using a shortcode. As seeon on nytimes.com
+Tweetability lets you indicate tweetable text in your posts that your readers can tweet with single click by using a shortcode. As seen on nytimes.com
 
 == Description ==
 
@@ -15,25 +15,17 @@ Let readers of your wordpress tweet the text with one click. Inspired from a rec
 
 This plugin is based on jQuery plugin [Tweetable](https://github.com/dukerson/jquery.tweetable.js) by [Justin Duke](http://jmduke.net/)
 
+= How To Use =
+Place [tweetability]your content here[tweetability] in your posts/pages.
+
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+1. Copy the zip file to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
 
-e.g.
-
-1. Upload `tweetability.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place [tweetability]your content here [tweetability] in your posts/pages.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
 
 == Screenshots ==
 
