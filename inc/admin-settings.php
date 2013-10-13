@@ -59,7 +59,7 @@ class Tweetability_Admin {
   /**
   * Adds the settings link on plugins page
   */
-  public static function filter_action_links( $links, $file ) {
+  public function filter_action_links( $links, $file ) {
     if ( $file != Tweetability_Info::$plugin_basename )
       return $links;
 
@@ -73,20 +73,13 @@ class Tweetability_Admin {
 
   /**
    * Handles admin_menu action
-   *
-   * @since    0.1.0
-   */
-  public function do_admin_menu() {
-    self::get_instance()->_do_admin_menu();
-  }
-    
-  /**
    * Register the administration menu for this plugin into the WordPress Dashboard menu.
    *
    * @since    0.1.0
    */
-  private function _do_admin_menu() {
-    $this->plugin_screen_hook_suffix = add_options_page( 
+  public function handle_admin_menu() {
+    add_action( 'admin_init', array( $this, 'handle_admin_init') );
+    $this->plugin_screen_hook_suffix = add_options_page(
             __('Tweetability Options', 'tweetability'),     /* The title of the page when the menu is selected */
             __('Tweetability', 'tweetability'),/* The text for the menu */
             'manage_options',                              /* capability required for this menu to be displayed to user */
@@ -106,14 +99,13 @@ class Tweetability_Admin {
    * @since     0.1.0
    * @return    void
    */
-  public function enqueue_admin_styles() {
+  public function enqueue_admin_styles($screen_suffix) {
     // Return early if no settings page is registered
     if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
       return;
     }
 
-    $screen = get_current_screen();
-    if ( $screen->id == $this->plugin_screen_hook_suffix ) {
+    if ( $screen_suffix == $this->plugin_screen_hook_suffix ) {
       wp_enqueue_style( Tweetability_Info::slug .'-admin-styles',
                         Tweetability_Info::$plugin_url . '/css/admin.css', 
                         array(),
@@ -127,14 +119,13 @@ class Tweetability_Admin {
    * @since     0.1.0
    * @return    void
    */
-  public function enqueue_admin_scripts() {
+  public function enqueue_admin_scripts($screen_suffix) {
     // Return early if no settings page is registered
     if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
       return;
     }
 
-    $screen = get_current_screen();
-    if ( $screen->id == $this->plugin_screen_hook_suffix ) {
+    if ( $screen_suffix == $this->plugin_screen_hook_suffix ) {
       wp_enqueue_script( Tweetability_Info::slug . '-admin-script', 
                          Tweetability_Info::$plugin_url . '/js/admin.js',
                          array( 'jquery' ),
@@ -150,27 +141,37 @@ class Tweetability_Admin {
       <form action="options.php" method="POST">
         <?php settings_fields( 'tweetability-settings-group' ); ?>
         <?php do_settings_sections( Tweetability_Info::settings_page_slug ); ?>
-        <?php submit_button(); ?>
+        <?php $this->render_submit_button() ?>
+
       </form>
     </div>
     <?php
   }
 
-  /**
-  * Handles admin_init action
-  *
-  * @since    0.1.0
-  */
-  public static function do_admin_init() {
-    self::get_instance()->_do_admin_init();
+  private function render_submit_button() {
+    // submit_button was introduced in WP 3.1.0 so fallback to submit button html for older versions
+    if (function_exists('submit_button')) {
+      submit_button();
+      return;
+    }
+    ?>
+
+    <p class="submit">
+      <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo _( 'Save Changes' ); ?>"/>
+    </p>
+
+    <?php
   }
-    
+
   /**
   * Adds sections and fields on settings page using settings API
   *
   * @since    0.1.0
   */
-  private function _do_admin_init() {
+
+  public function handle_admin_init() {
+    add_filter( 'plugin_action_links', array($this,'filter_action_links'), 10, 2 );
+
     $this->settings = get_option( 'tweetability-settings' );
 
     register_setting( 'tweetability-settings-group', 'tweetability-settings', array($this, 'validate_plugin_options') );
@@ -251,11 +252,5 @@ class Tweetability_Admin {
     // return the settings that you want to be saved.
     return $inputs;
   }
-  
 
 }
-
-add_action( 'admin_init', array('Tweetability_Admin','do_admin_init') );
-add_action( 'admin_menu', array('Tweetability_Admin','do_admin_menu') );
-
-add_filter( 'plugin_action_links', array('Tweetability_Admin','filter_action_links'), 10, 2 );

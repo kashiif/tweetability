@@ -1,6 +1,6 @@
 === Tweetability ===
 Contributors: kashiif
-Tags: twitter
+Tags: twitter, tweetable, tweet, share
 Requires at least: 3.5.1
 Tested up to: 3.6
 Stable tag: trunk
