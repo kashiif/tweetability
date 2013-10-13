@@ -7,15 +7,15 @@
  * @author  Kashif Iqbal Khan <kashiif@gmail.com>
  * @license   GPL-2.0+
  * @copyright 2013 Kashif Iqbal Khan kashiif@gmail.com
- * @link      www.kashiif.com
+ * @link      http://www.kashiif.com
  *
  * @wordpress-plugin
  * Plugin Name: Tweetability
  * Plugin URI:  https://wordpress.org/plugins/tweetability/
  * Description: Make sentences in your post tweetable - The modern way
- * Version:     0.1.0
+ * Version:     0.2.0
  * Author:      Kashif Iqbal Khan
- * Author URI:  www.kashiif.com
+ * Author URI:  http://www.kashiif.com
  * Text Domain: tweetability-locale
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -44,7 +44,8 @@ class Tweetability_Info {
    * @var      string
    */
   const slug = 'tweetability';
-  //const base_name = 'tweetability';
+  
+  
   const settings_page_slug = 'tweetability-options';
 
 
@@ -74,6 +75,7 @@ class Tweetability_Info {
     self::$plugin_url = untrailingslashit(plugins_url('', __FILE__));
     self::$plugin_basename = plugin_basename(__FILE__);
 
+    // Load admin only when required
     add_action( 'admin_menu', array('Tweetability_Info','handle_admin_menu') );
   }
 

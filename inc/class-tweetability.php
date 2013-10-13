@@ -28,8 +28,8 @@ class Tweetability {
 	 */
 	private function Tweetability() {
 
-		// Handle init
-		add_action( 'init', array( $this, 'handle_init' ) );
+    // Handle init
+    add_action( 'init', array( $this, 'handle_init' ) );
 
     // Lets enqueue script and style conditionally in the_posts handler
     add_filter( 'the_posts', array( $this, 'handle_the_posts') );
@@ -61,7 +61,7 @@ class Tweetability {
    * Handles init action.
    *
    * @since     0.2.0
-   * @return    object    A single instance of this class.
+   * @return    void
    */
   public function handle_init() {
     $this->load_plugin_textdomain();
@@ -100,7 +100,7 @@ class Tweetability {
   }
 
   /**
-   * Handles the_posts filter. Checks if the psots have the shortcode and enqueue script and stylesheet accordingly.
+   * Handles the_posts filter. Checks if the posts have the shortcode and enqueue script and stylesheet accordingly.
    *
    * @since    0.2.0
    */

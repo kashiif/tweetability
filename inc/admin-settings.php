@@ -57,9 +57,11 @@ class Tweetability_Admin {
   }
 
   /**
-  * Adds the settings link on plugins page
-  */
-  public function filter_action_links( $links, $file ) {
+   * Handles filter_action_links filter. Adds the settings link on plugins page
+   *
+   * @since    0.1.0
+   */
+  public static function filter_action_links( $links, $file ) {
     if ( $file != Tweetability_Info::$plugin_basename )
       return $links;
 
@@ -117,6 +119,7 @@ class Tweetability_Admin {
    * Register and enqueue admin-specific JavaScript.
    *
    * @since     0.1.0
+   *
    * @return    void
    */
   public function enqueue_admin_scripts($screen_suffix) {
@@ -139,9 +142,11 @@ class Tweetability_Admin {
       <?php screen_icon(); ?>
       <h2><?php printf( __('Tweetability Options', 'tweetability') ) ?></h2>
       <form action="options.php" method="POST">
-        <?php settings_fields( 'tweetability-settings-group' ); ?>
-        <?php do_settings_sections( Tweetability_Info::settings_page_slug ); ?>
-        <?php $this->render_submit_button() ?>
+      <?php 
+        settings_fields( 'tweetability-settings-group' );
+        do_settings_sections( Tweetability_Info::settings_page_slug );
+        $this->render_submit_button();
+      ?>
 
       </form>
     </div>
@@ -164,13 +169,14 @@ class Tweetability_Admin {
   }
 
   /**
-  * Adds sections and fields on settings page using settings API
-  *
-  * @since    0.1.0
-  */
+   * Handles admin_init action
+   * Adds sections and fields on settings page using settings API
+   *
+   * @since    0.1.0
+   */
 
   public function handle_admin_init() {
-    add_filter( 'plugin_action_links', array($this,'filter_action_links'), 10, 2 );
+    add_filter( 'plugin_action_links', array('Tweetability_Admin','filter_action_links'), 10, 2 );
 
     $this->settings = get_option( 'tweetability-settings' );
 
@@ -187,9 +193,9 @@ class Tweetability_Admin {
 
     // Fields - General Settings section
     add_settings_field( 'tweetability-via', __('Via', 'tweetability') . ' (via)', array($this, 'add_setting'), $page, $sections[0],
-      array( 'via', __('A twitter screen name that will be added as @via <screen name> to the tweet text', 'tweetability') ) );
+      array( 'via', __('A screen name to associate with the Tweet. The provided screen name will be appended to the end of the tweet with the text: "via @username"', 'tweetability') ) );
     add_settings_field( 'tweetability-related', __('Related', 'tweetability') . ' (related)', array($this, 'add_setting'), $page, $sections[0],
-      array( 'related', __('HELP_TEXT_RELATED', 'tweetability') ) );
+      array( 'related', __('Suggest accounts related to the your content or intention by comma-separating a list of screen names. After Tweeting, the user will be encouraged to follow these accounts.', 'tweetability') ) );
     add_settings_field( 'tweetability-linkclass', __('Link Class', 'tweetability') . ' (linkclass)', array($this, 'add_setting'), $page, $sections[0],
       array( 'linkclass', __('Additional css classes to add to twitter link. Thic can be used to change color, background color or hover color', 'tweetability') ) );
     add_settings_field( 'tweetability-tooltip', __('Tooltip', 'tweetability') . ' (tooltip)', array($this, 'add_setting'), $page, $sections[0],
